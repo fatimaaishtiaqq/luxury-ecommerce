@@ -21,9 +21,11 @@ const Navbar = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('lux_user');
-        if (storedUser) {
-            setUser(JSON.parse(storedUser));
+        try {
+            const storedUser = localStorage.getItem('lux_user');
+            if (storedUser) setUser(JSON.parse(storedUser));
+        } catch {
+            localStorage.removeItem('lux_user');
         }
     }, []);
 

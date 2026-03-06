@@ -1,5 +1,5 @@
-const rawBase = (import.meta.env.VITE_API_URL || '').trim();
-// Normalize: remove trailing slash so we don't end up with //api/...
+// Use VITE_API_URL if set; otherwise in production use backend URL (separate Vercel projects)
+const rawBase = (import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://luxury-ecommerce-snowy.vercel.app' : '')).trim();
 const API_BASE_URL = rawBase.endsWith('/') ? rawBase.slice(0, -1) : rawBase;
 
 // Simple in-memory cache to avoid refetching the same resources repeatedly

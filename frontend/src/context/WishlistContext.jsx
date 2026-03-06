@@ -6,8 +6,12 @@ export const useWishlist = () => useContext(WishlistContext);
 
 export const WishlistProvider = ({ children }) => {
     const [wishlistItems, setWishlistItems] = useState(() => {
-        const stored = localStorage.getItem('lux_wishlist');
-        return stored ? JSON.parse(stored) : [];
+        try {
+            const stored = localStorage.getItem('lux_wishlist');
+            return stored ? JSON.parse(stored) : [];
+        } catch {
+            return [];
+        }
     });
 
     useEffect(() => {

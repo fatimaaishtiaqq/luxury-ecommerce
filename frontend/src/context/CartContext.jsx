@@ -6,8 +6,12 @@ export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
     const [cartItems, setCartItems] = useState(() => {
-        const storedCart = localStorage.getItem('lux_cart');
-        return storedCart ? JSON.parse(storedCart) : [];
+        try {
+            const storedCart = localStorage.getItem('lux_cart');
+            return storedCart ? JSON.parse(storedCart) : [];
+        } catch {
+            return [];
+        }
     });
 
     useEffect(() => {
