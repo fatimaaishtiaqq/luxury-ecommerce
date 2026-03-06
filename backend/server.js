@@ -10,18 +10,30 @@ import categoryRoutes from './routes/categoryRoutes.js';
 import subCategoryRoutes from './routes/subCategoryRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
-import path from 'path';
 
 dotenv.config();
 
-connectDB().then(() => {
-    dropLegacyIndexes();
-});
-
 const app = express();
 
-app.use(cors());
+// Allow all origins - required for Vercel cross-domain requests between frontend and backend
+app.use(cors({ origin: '*' }));
 app.use(express.json());
+
+// Lazy DB connection middleware - connects once per serverless container lifecycle
+let isConnected = false;
+app.use(async (req, res, next) => {
+    if (!isConnected) {
+        try {
+            await connectDB();
+            isConnected = true;
+            // Drop legacy indexes only once after first connection
+            dropLegacyIndexes().catch(() => { });
+        } catch (err) {
+            return res.status(500).json({ message: 'Database connection failed', error: err.message });
+        }
+    }
+    next();
+});
 
 app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
@@ -31,19 +43,14 @@ app.use('/api/subcategories', subCategoryRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/upload', uploadRoutes);
 
-// Remove local static upload folder, use Cloudinary now
-// const __dirname = path.resolve();
-// app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
-
 app.get('/', (req, res) => {
     res.send('Luxury E-Commerce API is running...');
 });
 
-const PORT = process.env.PORT || 5000;
-
-// Only listen if not running in a serverless environment like Vercel
-if (process.env.NODE_ENV !== 'production' || process.env.VERCEL !== '1') {
-    app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`));
+// Only start listening locally - Vercel handles this automatically in serverless
+if (process.env.VERCEL !== '1') {
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`));
 }
 
 // Export for Vercel Serverless
