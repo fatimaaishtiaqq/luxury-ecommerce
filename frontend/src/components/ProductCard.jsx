@@ -61,7 +61,7 @@ const ProductCard = ({ product }) => {
                             const fileName = pathParts[pathParts.length - 1];
                             const cleanPath = `uploads/${fileName}`;
 
-                            return `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${cleanPath}`;
+                            return `${import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000')}/${cleanPath}`;
                         })()}
                         alt={product.name || 'Product'}
                         className="w-full h-full object-cover aspect-[3/4] origin-center"

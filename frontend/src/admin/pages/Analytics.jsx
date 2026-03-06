@@ -3,7 +3,7 @@ import { BarChart3, TrendingUp, TrendingDown, DollarSign, ShoppingCart, Users } 
 import { useToast } from '../../context/ToastContext';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000');
 
 const Analytics = () => {
     const { showToast } = useToast();
