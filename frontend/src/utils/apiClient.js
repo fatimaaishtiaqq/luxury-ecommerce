@@ -1,4 +1,6 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || '';
+const rawBase = (import.meta.env.VITE_API_URL || '').trim();
+// Normalize: remove trailing slash so we don't end up with //api/...
+const API_BASE_URL = rawBase.endsWith('/') ? rawBase.slice(0, -1) : rawBase;
 
 // Simple in-memory cache to avoid refetching the same resources repeatedly
 const cache = new Map();
