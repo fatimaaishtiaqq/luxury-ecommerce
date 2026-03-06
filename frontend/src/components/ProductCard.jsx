@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { useToast } from '../context/ToastContext';
+import { API_BASE_URL } from '../utils/apiClient';
 
 const ProductCard = ({ product }) => {
     const [isHovered, setIsHovered] = useState(false);
@@ -61,7 +62,7 @@ const ProductCard = ({ product }) => {
                             const fileName = pathParts[pathParts.length - 1];
                             const cleanPath = `uploads/${fileName}`;
 
-                            return `${import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://luxury-ecommerce-snowy.vercel.app' : 'http://localhost:5000')}/${cleanPath}`;
+                            return `${API_BASE_URL || ''}/${cleanPath}`;
                         })()}
                         alt={product.name || 'Product'}
                         className="w-full h-full object-cover aspect-[3/4] origin-center"

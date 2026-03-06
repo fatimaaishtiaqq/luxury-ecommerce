@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Eye, Search, Filter, X, FileText } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://luxury-ecommerce-snowy.vercel.app' : 'http://localhost:5000');
+import { API_BASE_URL } from '../../utils/apiClient';
 
 const resolveImageUrl = (img) => {
     if (!img || typeof img !== 'string') return '/images/sample.jpg';

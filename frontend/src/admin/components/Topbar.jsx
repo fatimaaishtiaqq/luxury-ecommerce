@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Bell, Search, LogOut, Settings, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://luxury-ecommerce-snowy.vercel.app' : 'http://localhost:5000');
+import { API_BASE_URL } from '../../utils/apiClient';
 
 const Topbar = () => {
     const navigate = useNavigate();

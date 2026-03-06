@@ -6,7 +6,7 @@ import { useWishlist } from '../context/WishlistContext';
 import { useToast } from '../context/ToastContext';
 import ProductCard from '../components/ProductCard';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getWithCache } from '../utils/apiClient';
+import { getWithCache, API_BASE_URL } from '../utils/apiClient';
 import { useTheme } from '../context/ThemeContext';
 
 
@@ -27,7 +27,8 @@ const normalizeImagePath = (data) => {
             } else {
                 const pathParts = imgPath.replace(/\\/g, '/').split('/');
                 const fileName = pathParts[pathParts.length - 1];
-                parsedImage = `${import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://luxury-ecommerce-snowy.vercel.app' : 'http://localhost:5000')}/uploads/${fileName}`;
+                const base = API_BASE_URL || '';
+                parsedImage = `${base}/uploads/${fileName}`;
             }
         }
     }
@@ -35,7 +36,7 @@ const normalizeImagePath = (data) => {
     return parsedImage;
 };
 
-const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://luxury-ecommerce-snowy.vercel.app' : 'http://localhost:5000');
+const API_URL = API_BASE_URL || '';
 
 const resolveVariationImage = (imgPath) => {
     if (!imgPath) return '';

@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? "https://luxury-ecommerce-snowy.vercel.app" : "http://localhost:5000");
+const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
 // Simple in-memory cache to avoid refetching the same resources repeatedly
 const cache = new Map();

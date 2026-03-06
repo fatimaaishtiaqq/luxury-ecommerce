@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://luxury-ecommerce-snowy.vercel.app' : 'http://localhost:5000');
+import { API_BASE_URL } from '../utils/apiClient';
 
 const Auth = () => {
     const [isLogin, setIsLogin] = useState(true);
