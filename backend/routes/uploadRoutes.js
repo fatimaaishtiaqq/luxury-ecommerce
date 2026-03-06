@@ -1,25 +1,42 @@
 import path from 'path';
 import express from 'express';
 import multer from 'multer';
-import fs from 'fs';
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-    destination(req, file, cb) {
-        const dir = 'uploads/';
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir, { recursive: true });
-        }
-        cb(null, dir);
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'luxury-ecommerce/uploads',
+        format: async (req, file) => {
+            // Extract extension without dot and lowercase it
+            let ext = path.extname(file.originalname).substring(1).toLowerCase();
+            if (ext === 'jpeg') ext = 'jpg';
+            // Default to png if unknown, else use original extension
+            const validFormats = ['jpg', 'png', 'webp', 'mp4', 'webm'];
+            return validFormats.includes(ext) ? ext : 'png';
+        },
+        public_id: (req, file) => {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+            // File basename without ext
+            const name = path.basename(file.originalname, path.extname(file.originalname));
+            return `${file.fieldname}-${name}-${uniqueSuffix}`;
+        },
     },
-    filename(req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(
-            null,
-            `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`
-        );
-    }
 });
 
 function checkFileType(file, cb) {
@@ -49,17 +66,14 @@ router.post('/', upload.array('images', 10), (req, res) => {
         return res.status(400).send({ message: 'No files uploaded' });
     }
 
-    // Safely map only string filename URL paths
+    // Return the Cloudinary secure URLs directly
     const filePaths = req.files.map(file => {
         if (!file || !file.path) return '';
-        // Make absolutely sure we are just storing the string path
-        const normalizedPath = file.path.replace(/\\/g, '/');
-        // Return relative to uploads dir without absolute C: references
-        return `/${normalizedPath}`;
+        return file.path; // multer-storage-cloudinary sets file.path to the secure_url
     }).filter(p => typeof p === 'string' && p.trim() !== '');
 
     res.send({
-        message: 'Files Uploaded Successfully',
+        message: 'Files Uploaded Successfully to Cloudinary',
         images: filePaths,
     });
 });

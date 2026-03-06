@@ -31,8 +31,9 @@ app.use('/api/subcategories', subCategoryRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/upload', uploadRoutes);
 
-const __dirname = path.resolve();
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+// Remove local static upload folder, use Cloudinary now
+// const __dirname = path.resolve();
+// app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 app.get('/', (req, res) => {
     res.send('Luxury E-Commerce API is running...');
@@ -40,4 +41,10 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`));
+// Only listen if not running in a serverless environment like Vercel
+if (process.env.NODE_ENV !== 'production' || process.env.VERCEL !== '1') {
+    app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`));
+}
+
+// Export for Vercel Serverless
+export default app;

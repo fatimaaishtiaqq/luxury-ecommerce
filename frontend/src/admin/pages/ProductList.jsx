@@ -6,11 +6,8 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const resolveImageUrl = (img) => {
     if (!img || typeof img !== 'string') return '/images/sample.jpg';
-    if (img.startsWith('http') || img.startsWith('/images/')) return img;
-
-    const pathParts = img.replace(/\\/g, '/').split('/');
-    const fileName = pathParts[pathParts.length - 1];
-    return `${API_BASE_URL}/uploads/${fileName}`;
+    if (img.startsWith('http') || img.startsWith('https') || img.startsWith('/images/')) return img;
+    return img;
 };
 
 const ProductList = () => {

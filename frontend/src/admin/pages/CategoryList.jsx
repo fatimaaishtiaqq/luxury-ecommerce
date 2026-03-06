@@ -166,10 +166,8 @@ const CategoryList = () => {
 
     const resolveImageUrl = (img) => {
         if (!img || typeof img !== 'string') return null;
-        if (img.startsWith('http') || img.startsWith('/images/')) return img;
-        const pathParts = img.replace(/\\/g, '/').split('/');
-        const fileName = pathParts[pathParts.length - 1];
-        return `${API_BASE_URL}/uploads/${fileName}`;
+        if (img.startsWith('http') || img.startsWith('https') || img.startsWith('/images/')) return img;
+        return img;
     };
 
     const handleDelete = async (id) => {
