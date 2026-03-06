@@ -27,7 +27,7 @@ const normalizeImagePath = (data) => {
             } else {
                 const pathParts = imgPath.replace(/\\/g, '/').split('/');
                 const fileName = pathParts[pathParts.length - 1];
-                parsedImage = `${import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000')}/uploads/${fileName}`;
+                parsedImage = `${import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://luxury-ecommerce-snowy.vercel.app' : 'http://localhost:5000')}/uploads/${fileName}`;
             }
         }
     }
@@ -35,7 +35,7 @@ const normalizeImagePath = (data) => {
     return parsedImage;
 };
 
-const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000');
+const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://luxury-ecommerce-snowy.vercel.app' : 'http://localhost:5000');
 
 const resolveVariationImage = (imgPath) => {
     if (!imgPath) return '';
@@ -45,7 +45,7 @@ const resolveVariationImage = (imgPath) => {
     return `${API_URL}/uploads/${fileName}`;
 };
 
-/** First image in product images array â€” used as default main image on load. No variation applied. */
+/** First image in product images array Ã¢â‚¬â€ used as default main image on load. No variation applied. */
 const getDefaultProductImage = (data) => {
     if (!data) return '';
     if (data.images && Array.isArray(data.images) && data.images.length > 0) {
@@ -294,7 +294,7 @@ const ProductDetails = () => {
             <div className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
 
-                    {/* Left: Image block â€” main image fixed aspect 3/4; thumbnail carousel same height, scrolls inside (never stretches page) */}
+                    {/* Left: Image block Ã¢â‚¬â€ main image fixed aspect 3/4; thumbnail carousel same height, scrolls inside (never stretches page) */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}

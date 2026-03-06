@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Bell, Search, LogOut, Settings, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:5000');
+const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://luxury-ecommerce-snowy.vercel.app' : 'http://localhost:5000');
 
 const Topbar = () => {
     const navigate = useNavigate();
@@ -130,7 +130,7 @@ const Topbar = () => {
                                                 className="absolute top-3 right-3 text-[var(--text-muted)] hover:text-[var(--text-primary)] opacity-0 group-hover:opacity-100 transition-opacity"
                                                 title="Dismiss"
                                             >
-                                                Ã—
+                                                Ãƒâ€”
                                             </button>
                                         </div>
                                     ))
